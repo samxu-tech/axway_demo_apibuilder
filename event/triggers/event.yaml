@@ -1,0 +1,23 @@
+triggers:
+  event-1:
+    name: Event Consumer
+    parameters:
+      event: check-inventory
+    enabled: true
+    invoke:
+      flow: ConsumerEventFlow
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  event-2:
+    name: Event Consumer
+    parameters:
+      event: purchase-orders
+    enabled: true
+    invoke:
+      flow: NewFlow
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env

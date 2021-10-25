@@ -1,0 +1,53 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "03 invoke flow for-each",
+		"description": ""
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"description": "The request"
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false
+	},
+	"start": "invoke-flow.1",
+	"nodes": {
+		"invoke-flow.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-invoke-flow/invoke-flow",
+			"name": "Invoke Flow (for-each)",
+			"method": "invokeFlowForEach",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "string",
+					"value": "\"Fruit\""
+				},
+				{
+					"name": "items",
+					"type": "array",
+					"value": "[\"apple\",\"banana\",\"cherry\"]"
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [],
+					"context": "$.response"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error"
+				}
+			}
+		}
+	}
+}

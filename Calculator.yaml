@@ -1,0 +1,50 @@
+swagger: '2.0'
+info:
+  title: Calculator
+  version: '1.0'
+  description: calculator
+  contact: {}
+host: 'localhost:8080'
+schemes:
+  - http
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /add:
+    parameters: []
+    get:
+      summary: Get Sum of Numbers
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          schema:
+            description: ''
+            type: number
+            x-examples:
+              example-1:
+                status: 200
+                body: '9'
+          examples:
+            Get sum: 666
+        '404':
+          description: User Not Found
+          schema:
+            type: 'null'
+          examples: {}
+      operationId: add
+      description: Retrieve the sum of numbers.
+      parameters:
+        - type: number
+          in: query
+          name: first_number
+          required: true
+          description: first number
+        - type: number
+          in: query
+          name: second_number
+          required: true
+          description: second number
+definitions: {}

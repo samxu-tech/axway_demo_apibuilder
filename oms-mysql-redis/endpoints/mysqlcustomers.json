@@ -1,0 +1,576 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "mysql/customers",
+		"description": "The mysql/customers REST API",
+		"version": "1.0.0"
+	},
+	"basePath": "/endpoints",
+	"paths": {
+		"/customers": {
+			"post": {
+				"responses": {
+					"201": {
+						"description": "The create succeeded.",
+						"headers": {
+							"Location": {
+								"description": "The URL to the newly created instance.",
+								"type": "string"
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Create a mysql/customers",
+				"operationId": "Create mysql/customer",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Create body",
+						"schema": {
+							"$ref": "schema:///model/mysql%2Fcustomers-full"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-create"
+			},
+			"delete": {
+				"responses": {
+					"204": {
+						"description": "The delete succeeded."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Deletes all mysql/customerss",
+				"operationId": "Delete All mysql/customer",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-deleteAll"
+			},
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find all succeeded, and the results are available.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "schema:///model/mysql%2Fcustomers-full"
+							}
+						}
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Find all mysql/customers",
+				"operationId": "Find All mysql/customer",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-findAll"
+			}
+		},
+		"/customers/{customerNumber}": {
+			"put": {
+				"responses": {
+					"204": {
+						"description": "The update succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Update a mysql/customers",
+				"operationId": "Update mysql/customer",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "customerNumber",
+						"in": "path",
+						"description": "The mysql/customers ID",
+						"required": true,
+						"type": "number"
+					},
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Update body",
+						"schema": {
+							"$ref": "schema:///model/mysql%2Fcustomers"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-update"
+			},
+			"delete": {
+				"responses": {
+					"204": {
+						"description": "The delete succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Delete a specific mysql/customers",
+				"operationId": "Delete One mysql/customer",
+				"consumes": [],
+				"parameters": [
+					{
+						"name": "customerNumber",
+						"in": "path",
+						"description": "The mysql/customers ID",
+						"required": true,
+						"type": "number"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-delete"
+			},
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find succeeded, and the results are available.",
+						"schema": {
+							"$ref": "schema:///model/mysql%2Fcustomers-full"
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Find one mysql/customers",
+				"operationId": "Find By ID mysql/customer",
+				"consumes": [],
+				"parameters": [
+					{
+						"name": "customerNumber",
+						"in": "path",
+						"description": "The mysql/customers ID",
+						"required": true,
+						"type": "number"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-findByID"
+			}
+		},
+		"/customers/distinct/{field}": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "Distinct fields response",
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"uniqueItems": true
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Find distinct mysql/customers",
+				"operationId": "Distinct mysql/customer",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "field",
+						"description": "The field name that must be distinct.",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-distinct"
+			}
+		},
+		"/customers/findAndModify": {
+			"put": {
+				"responses": {
+					"204": {
+						"description": "The find and modify succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Modifies a single mysql/customer. Although the query may match multiple mysql/customers, only the first one will be modified.",
+				"operationId": "Find and Modify mysql/customer",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Find and modify body",
+						"schema": {
+							"$ref": "schema:///model/mysql%2Fcustomers"
+						}
+					},
+					{
+						"name": "upsert",
+						"in": "query",
+						"type": "boolean",
+						"description": "Set to true to allow the method to create a new model."
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "sel",
+						"description": "Selects which fields to return from the query. Others are excluded. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "unsel",
+						"description": "Selects which fields to not return from the query. Others are included. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-findAndModify"
+			}
+		},
+		"/customers/count": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The count succeeded, and the results are available.",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Count a mysql/customers",
+				"operationId": "Count mysql/customer",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-count"
+			}
+		},
+		"/customers/upsert": {
+			"post": {
+				"responses": {
+					"201": {
+						"description": "The upsert succeeded, and resulted in an insert.",
+						"headers": {
+							"Location": {
+								"description": "The URL to the newly created instance.",
+								"type": "string"
+							}
+						}
+					},
+					"204": {
+						"description": "The upsert succeeded, and resulted in an update."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Create or update a mysql/customers",
+				"operationId": "Upsert mysql/customer",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Upsert body",
+						"schema": {
+							"$ref": "schema:///model/mysql%2Fcustomers-full"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-upsert"
+			}
+		},
+		"/customers/query": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The query succeeded, and the results are available.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "schema:///model/mysql%2Fcustomers-full"
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Query a mysql/customers",
+				"operationId": "Query mysql/customer",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "sel",
+						"description": "Selects which fields to return from the query. Others are excluded. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "unsel",
+						"description": "Selects which fields to not return from the query. Others are included. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/customers"
+				],
+				"x-flow": "mysqlcustomers-query"
+			}
+		}
+	}
+}

@@ -1,0 +1,347 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "mysqlemployees-findByID",
+		"description": "Finds mysql/employees by ID"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint.",
+				"properties": {
+					"employeeNumber": {
+						"description": "The mysql/employees ID",
+						"type": "number"
+					}
+				},
+				"required": [
+					"employeeNumber"
+				]
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "logger.1",
+	"nodes": {
+		"model.findByID": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mysql/employees",
+			"method": "findByID",
+			"name": "Find employees",
+			"parameters": [
+				{
+					"name": "employeeNumber",
+					"value": "$.params.employeeNumber",
+					"metaName": "employeeNumber"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.model",
+					"routes": [
+						"mustache.1"
+					],
+					"metaName": "Next"
+				},
+				"notfound": {
+					"routes": [
+						"response.error.notfound"
+					],
+					"metaName": "Not Found"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Find by ID"
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success (HTTP 200)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "body",
+					"value": "$.model",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"response.error.notfound": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Not Found (HTTP 404)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "404",
+					"type": "number",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"response.error": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Bad Request (HTTP 400)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "400",
+					"type": "number",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"redis.1": {
+			"type": "nodehandler://@axway-api-builder-ext/api-builder-plugin-fn-redis/redis",
+			"name": "Search Cache",
+			"method": "get",
+			"parameters": [
+				{
+					"name": "key",
+					"type": "jsonpath",
+					"value": "$.params.employeeNumber",
+					"metaName": "Key",
+					"metaDescription": "They key used to retrieve value from Redis."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"logger.2"
+					],
+					"context": "$.cached_result",
+					"metaName": "Next"
+				},
+				"noResult": {
+					"routes": [
+						"model.findByID"
+					],
+					"context": "$.value",
+					"metaName": "No Result"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Get"
+		},
+		"javascript.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "JSONify string",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.cached_result",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"return JSON.parse(data)\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/API_Builder_4x_allOS_en/page/javascript_flow-node.html"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.model",
+					"routes": [
+						"response.success"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		},
+		"mustache.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-mustache/mustache",
+			"name": "Format string",
+			"method": "format",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.params.employeeNumber",
+					"metaName": "Data",
+					"metaDescription": "The value to assign to the \"data\" variable in the template."
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{{data}}\"",
+					"metaName": "Template",
+					"metaDescription": "The Mustache template. e.g. `Hi {{data.user}}`."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.key_as_string",
+					"routes": [
+						"redis.2"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Format string"
+		},
+		"redis.2": {
+			"type": "nodehandler://@axway-api-builder-ext/api-builder-plugin-fn-redis/redis",
+			"name": "Add to cache",
+			"method": "set",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "jsonpath",
+					"value": "$.model",
+					"metaName": "Value",
+					"metaDescription": "The value to store in Redis along with the key. It must be either a String or Date, all other types are converted into Strings using JSON.stringify."
+				},
+				{
+					"name": "key",
+					"type": "jsonpath",
+					"value": "$.key_as_string",
+					"metaName": "Key",
+					"metaDescription": "They key used to store the value in Redis."
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"response.success"
+					],
+					"context": "$.result",
+					"metaName": "Next"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error",
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Set"
+		},
+		"logger.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-logger/logger",
+			"name": "Log Message",
+			"method": "log",
+			"parameters": [
+				{
+					"name": "message",
+					"type": "jsonpath",
+					"value": "$.params.employeeNumber",
+					"metaName": "Message",
+					"metaDescription": "The log message."
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": null,
+					"routes": [
+						"redis.1"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Log Message"
+		},
+		"logger.2": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-logger/logger",
+			"name": "Log Message",
+			"method": "log",
+			"parameters": [
+				{
+					"name": "message",
+					"type": "string",
+					"value": "\"Get data from redis cache\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": null,
+					"routes": [
+						"javascript.1"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": []
+				}
+			}
+		}
+	}
+}

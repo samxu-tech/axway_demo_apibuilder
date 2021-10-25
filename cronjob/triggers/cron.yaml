@@ -1,0 +1,11 @@
+triggers:
+  cron-1:
+    name: Cron
+    parameters:
+      cronExpression: '*/5 * * * * *'
+    enabled: true
+    invoke:
+      flow: NewFlow
+      parameters:
+        config: $.config
+        env: $.env
